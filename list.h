@@ -1,6 +1,8 @@
-//
-// Created by Marek on 2017-03-24.
-//
+/**
+ *
+ * static jak nie uzywamy poza plikiem
+ *
+ */
 
 #ifndef DRZEWO2_LIST_H
 typedef struct ListNode {
@@ -16,6 +18,7 @@ typedef struct List {
 } List;
 
 List new();
+
 
 #define DRZEWO2_LIST_H
 
