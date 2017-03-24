@@ -28,3 +28,13 @@ static void print_list(List *l) {
         it = it->next;
     }
 }
+
+void list_delete(List *l) {
+    ListNode* it = l->first;
+    l->first = l->last = NULL;
+    while (it) {
+        ListNode *to_erase = it;
+        it = it->next;
+        free(to_erase);
+    }
+}

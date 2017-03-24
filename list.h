@@ -22,7 +22,7 @@ typedef struct List {
 
 List new();
 void list_pushback(List* l, int i);
-void list_free(List* list);
+void list_delete(List* list);
 size_t list_size(List* list); // wystarczy dodać do struktury List pole size_t count;
 void list_insert(List* list, size_t index);
 int list_get(List* list, size_t index);
