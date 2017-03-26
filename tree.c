@@ -4,7 +4,7 @@
 
 #include "tree.h"
 
-static TreeNode* Nodes[MAX_NUMBER_OF_TREE_NODES];
+static TreeNode* nodes[MAX_NUMBER_OF_TREE_NODES];
 static int new_node_index = 1;
 
 void add_node(int index) {
