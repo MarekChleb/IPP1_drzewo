@@ -5,29 +5,38 @@
  */
 
 #ifndef DRZEWO2_LIST_H
+
+#define DRZEWO2_LIST_H
+
 #include <stdio.h>
 #include <malloc.h>
 
-typedef struct ListNode {
-    int data;
-    struct List* parent;
-    struct ListNode* prev;
-    struct ListNode* next;
-} ListNode;
+#define MAX_NUMBER_OF_TREE_NODES 1000007
 
-typedef struct List {
-    ListNode* first;
-    ListNode* last;
-} List;
+typedef struct TreeNode {
+    int index;
+    struct TreeParentPointer *parent;
+    struct TreeNode *prev, *next;
+    struct TreeNodesList *sons;
+} TreeNode;
 
-List new();
-void list_pushback(List* l, int i);
-void list_delete(List* list);
-size_t list_size(List* list); // wystarczy dodać do struktury List pole size_t count;
-void list_insert(List* list, size_t index);
-int list_get(List* list, size_t index);
-void list_remove(List* list, size_t index);
+typedef struct TreeNodesList {
+    TreeNode* first;
+    TreeNode* last;
+} TreeNodesList;
 
-#define DRZEWO2_LIST_H
+typedef struct TreeParentPointer {
+    TreeNode *node;
+};
+
+void init();
+TreeNodesList* new_tree_nodes_list();
+TreeNode* new_tree_node(int index);
+void pushback_new_son(TreeNode *branch, int index);
+void print_sons(TreeNode *branch);
+void print_my_subtree(TreeNode *branch);
+void delete_sons(TreeNode *branch);
+void delete_my_subtree(TreeNode **branch);
+TreeNode* get_node(int index);
 
 #endif //DRZEWO2_LIST_H

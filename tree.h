@@ -4,8 +4,14 @@
 
 #ifndef DRZEWO2_TREE_H
 
+#define DRZEWO2_TREE_H
+
 #include "list.h"
 
-#define DRZEWO2_TREE_H
+void add_node(int index);
+void rightmost_child(int index);
+void delete_node(int index);
+void delete_subtree(int index);
+void split_node(int index);
 
 #endif //DRZEWO2_TREE_H
