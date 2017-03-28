@@ -9,13 +9,13 @@ static int new_node_index = 1;
 void add_node(int index) {
     TreeNode *branch = get_node(index);
     pushback_new_son(branch, new_node_index++);
-    printf("OK\n");
+    printf(OK_COMMUNICATE);
 }
 
 void rightmost_child(int index) {
     TreeNode *branch = get_node(index);
-    if(branch->sons->last) {
-        printf("%d", branch->sons->last->index);
+    if(branch->sons->right_guard) {
+        printf("%d", branch->sons->right_guard->index);
     } else {
         printf("-1");
     }
@@ -23,53 +23,43 @@ void rightmost_child(int index) {
 
 void delete_node(int index) {
     TreeNode *branch = get_node(index);
-    TreeNode *first_son = branch->sons->first;
-    TreeNode *last_son = branch->sons->last;
-    TreeNode *parent = branch->parent->node;//not NULL
-    if(first_son) {
-        first_son->parent->node = branch->parent->node;
-        first_son->prev = branch->prev;
-        if(branch->prev) {
-            branch->prev->next = first_son;
-        } else { //branch is the first son of his parent
-            parent->sons->first = first_son;
-        }
-        last_son->next = branch->next;
-        if(branch->next) {
-            branch->next->prev = last_son;
-        } else { //branch is the last son of his parent
-            parent->sons->last = last_son;
-        }
-    } else { //branch has no first son, so therefore he has no sons
-        if(branch->prev) {
-            branch->prev->next = branch->next;
-        } else { //branch is the first son of his parent
-            parent->sons->first = branch->next;
-        }
-        if(branch->next) {
-            branch->next->prev = branch->prev;
-        } else { //branch is the last son of his parent
-            parent->sons->last = branch->prev;
-        }
+    TreeNode *left = branch->sons->left_guard;
+    TreeNode *right = branch->sons->right_guard;
+    if (left->next == right) {
+        bond_nodes(branch->prev, branch->next);
+    } else { //branch has sons
+        bond_nodes(branch->prev, left->next);
+        bond_nodes(right->prev, branch->next);
     }
-
-    null_node(index);
     free(branch);
-    printf("OK\n")
+    printf(OK_COMMUNICATE);
 }
 
 void delete_subtree(int index) {
     delete_sons(get_node(index));
     delete_node(index);
-    printf("OK\n");
+    printf(OK_COMMUNICATE);
 }
 
 void split_node(int index, int sons_index) {
-    TreeNode* branch = get_node(index);
-    TreeNode* son = get_node(sons_index);
-    TreeNode* temp_last = branch->sons->last;
+    TreeNode *branch = get_node(index);
+    TreeNode *son = get_node(sons_index);
+    TreeNode *right_brother_of_son = son->next;
+    TreeNode *new = new_tree_node(new_node_index++);
+    TreeNode *new_left_guard = new_tree_node(INDEX_OF_LEFT_GUARD);
+    TreeNode *new_right_guard = new_tree_node(INDEX_OF_RIGHT_GUARD);
+    
+    new_left_guard->prev = new_right_guard->next = new;
+    if(right_brother_of_son != branch->sons->right_guard) {
+        bond_nodes(new_left_guard, right_brother_of_son);
+        bond_nodes(branch->sons->right_guard->prev, new_right_guard);
+    } else {
+        bond_nodes(new_left_guard, new_right_guard);
+    }
+    new->sons->left_guard = new_left_guard;
+    new->sons->right_guard = new_right_guard;
 
-
-
+    bond_nodes(son, new);
+    bond_nodes(new, branch->sons->right_guard);
+    printf(OK_COMMUNICATE);
 }
-

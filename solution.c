@@ -6,11 +6,11 @@ int main() {
     add_node(0);
     add_node(0);
     add_node(0);
-    add_node(2);
-    add_node(2);
+    split_node(0, 1);
     print_my_subtree(test);
     delete_subtree(2);
     printf("sons after delete: \n");
     print_my_subtree(test);
+
     return 0;
 }

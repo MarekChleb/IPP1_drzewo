@@ -8,6 +8,8 @@
 
 #include "list.h"
 
+#define OK_COMMUNICATE "OK\n"
+
 void add_node(int index);
 void rightmost_child(int index);
 void delete_node(int index);

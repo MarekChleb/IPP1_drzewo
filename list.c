@@ -6,24 +6,28 @@
 
 static TreeNode* nodes[MAX_NUMBER_OF_TREE_NODES];
 
-TreeNodesList* new_tree_nodes_list() {
+TreeNodesList* new_tree_nodes_list(TreeNode* parent) {
     TreeNodesList *new_container;
+    TreeNode *left, *right;
     new_container = (TreeNodesList*) malloc(sizeof(TreeNodesList));
-    new_container->first = new_container->last = NULL;
+    left = (TreeNode*) malloc(sizeof(TreeNode));
+    right = (TreeNode*) malloc(sizeof(TreeNode));
+    left->prev = right->next = parent;
+    bond_nodes(left, right);
+    left->index = INDEX_OF_LEFT_GUARD;
+    right->index = INDEX_OF_RIGHT_GUARD;
+    new_container->left_guard = left;
+    new_container->right_guard = right;
 
     return new_container;
 }
 
 TreeNode *new_tree_node(int index) {
     TreeNode *new_branch;
-    TreeParentPointer *new_parent;
     new_branch = (TreeNode*) malloc(sizeof(TreeNode));
-    new_parent = (TreeParentPointer*) malloc(sizeof(TreeParentPointer));
-    new_parent->node = NULL;
     new_branch->index = index;
-    new_branch->parent = new_parent;
     new_branch->prev = new_branch->next = NULL;
-    new_branch->sons = new_tree_nodes_list();
+    new_branch->sons = new_tree_nodes_list(new_branch);
     nodes[index] = new_branch;
 
     return new_branch;
@@ -31,73 +35,50 @@ TreeNode *new_tree_node(int index) {
 
 void pushback_new_son(TreeNode *branch, int index) {
     TreeNode *new_son = new_tree_node(index);
-    TreeNodesList* sons = branch->sons;
-    new_son->parent->node = branch;
-    if(sons->last) {
-        new_son->prev = sons->last;
-        sons->last->next = new_son;
-    } else { //*branch has no sons.
-        sons->first = new_son;
-    }
-    sons->last = new_son;
+    TreeNode* right = branch->sons->right_guard;
+    bond_nodes(right->prev, new_son);
+    bond_nodes(new_son, right);
 }
 
 void print_sons(TreeNode *branch) {
-    TreeNode *it = branch->sons->first;
-    while(it) {
+    TreeNode *it = branch->sons->left_guard->next;
+    while(it != branch->sons->right_guard) {
         printf("I'm in son %d\n", it->index);
         it = it->next;
     }
 }
 
 void print_my_subtree(TreeNode *branch) {
-    if (branch) {
-        TreeNode *it = branch->sons->first;
+    if (branch->sons->left_guard->next != branch->sons->right_guard) {
+        TreeNode *it = branch->sons->left_guard->next;
         printf("Im in %d:\n", branch->index);
-        if (!it) {
-            printf("I have no sons\n");
-        }
-        while (it) {
+        while (it != branch->sons->right_guard) {
             printf("Entering my son %d\n", it->index);
             print_my_subtree(it);
             it = it->next;
         }
-        printf("Quitting %d\n", branch->index);
     } else {
-        printf("This subtree is empty\n");
+        printf("This son is a leaf\n");
     }
+    printf("Quitting %d\n", branch->index);
 }
 
 void delete_sons(TreeNode *branch) {
-    TreeNode *it = branch->sons->first;
-    while(it) {
+    TreeNode *it = branch->sons->left_guard->next;
+    while(it != branch->sons->right_guard) {
         TreeNode *son_to_delete;
         son_to_delete = it;
         it = it->next;
         delete_sons(son_to_delete);
         free(son_to_delete);
     }
-    branch->sons->first = branch->sons->last = NULL;
+    bond_nodes(branch->sons->left_guard, branch->sons->right_guard);
 }
 
-void delete_my_subtree(TreeNode **branch) {
-    if((*branch)->parent) {
-        if((*branch)->parent->node->sons->first == (*branch)) {
-            (*branch)->parent->node->sons->first = NULL;
-        }
-        if((*branch)->parent->node->sons->last == (*branch)) {
-            (*branch)->parent->node->sons->last = NULL;
-        }
 
-    }
-    if((*branch)->next) {
-        (*branch)->next->prev = (*branch)->prev;
-    }
-    if((*branch)->prev) {
-        (*branch)->prev->next = (*branch)->next;
-    }
-    delete_sons(*branch);
-    free(*branch);
+void delete_my_subtree(TreeNode *branch) {
+    bond_nodes(branch->prev, branch->next);
+    delete_sons(branch);
     free(branch);
 }
 
@@ -111,4 +92,9 @@ TreeNode* get_node(int index) {
 
 void null_node(int index) {
     nodes[index] = NULL;
+}
+
+void bond_nodes(TreeNode *l, TreeNode *p) {
+    l->next = p;
+    p->prev = l;
 }
