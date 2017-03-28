@@ -27,7 +27,7 @@ typedef struct TreeNodesList {
 
 typedef struct TreeParentPointer {
     TreeNode *node;
-};
+} TreeParentPointer;
 
 void init();
 TreeNodesList* new_tree_nodes_list();
@@ -38,5 +38,6 @@ void print_my_subtree(TreeNode *branch);
 void delete_sons(TreeNode *branch);
 void delete_my_subtree(TreeNode **branch);
 TreeNode* get_node(int index);
+void null_node(int index);
 
 #endif //DRZEWO2_LIST_H

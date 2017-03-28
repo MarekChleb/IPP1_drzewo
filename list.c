@@ -16,9 +16,12 @@ TreeNodesList* new_tree_nodes_list() {
 
 TreeNode *new_tree_node(int index) {
     TreeNode *new_branch;
+    TreeParentPointer *new_parent;
     new_branch = (TreeNode*) malloc(sizeof(TreeNode));
+    new_parent = (TreeParentPointer*) malloc(sizeof(TreeParentPointer));
+    new_parent->node = NULL;
     new_branch->index = index;
-    new_branch->parent = NULL;
+    new_branch->parent = new_parent;
     new_branch->prev = new_branch->next = NULL;
     new_branch->sons = new_tree_nodes_list();
     nodes[index] = new_branch;
@@ -31,7 +34,7 @@ void pushback_new_son(TreeNode *branch, int index) {
     TreeNodesList* sons = branch->sons;
     new_son->parent->node = branch;
     if(sons->last) {
-        new_son->prev = sons->last->prev;
+        new_son->prev = sons->last;
         sons->last->next = new_son;
     } else { //*branch has no sons.
         sons->first = new_son;
@@ -104,4 +107,8 @@ void init() {
 
 TreeNode* get_node(int index) {
     return nodes[index];
+}
+
+void null_node(int index) {
+    nodes[index] = NULL;
 }
