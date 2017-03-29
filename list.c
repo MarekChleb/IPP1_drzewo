@@ -70,6 +70,7 @@ void delete_sons(TreeNode *branch) {
         son_to_delete = it;
         it = it->next;
         delete_sons(son_to_delete);
+        null_node(son_to_delete->index);
         free(son_to_delete);
     }
     bond_nodes(branch->sons->left_guard, branch->sons->right_guard);

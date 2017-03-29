@@ -32,6 +32,7 @@ void delete_node(int index) {
         bond_nodes(right->prev, branch->next);
     }
     free(branch);
+    null_node(index);
     printf(OK_COMMUNICATE);
 }
 
