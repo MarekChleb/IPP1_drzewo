@@ -1,6 +1,6 @@
 #include "parse.h"
 
-void parse_line() {
+int parse_line() {
     char input[MAX_INPUT_SIZE];
     Command *to_do;
 
@@ -9,11 +9,12 @@ void parse_line() {
         to_do = parse_command(input);
         do_a_command(to_do);
         free(to_do);
+        return 1;
     }
+    return 0;
 }
 
 Command* parse_command(char *input) {
-    char *temp, *next;
     char command_name[MAX_COMMAND_NAME_SIZE];
     int value1 = -1, value2 = -1;
     Command* new_command;

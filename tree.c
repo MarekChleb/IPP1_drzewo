@@ -14,10 +14,10 @@ void add_node(int index) {
 
 void rightmost_child(int index) {
     TreeNode *branch = get_node(index);
-    if(branch->sons->right_guard) {
-        printf("%d", branch->sons->right_guard->index);
+    if(branch->sons->right_guard->prev != branch->sons->left_guard) {
+        printf("%d\n", branch->sons->right_guard->prev->index);
     } else {
-        printf("-1");
+        printf("-1\n");
     }
 }
 
@@ -39,7 +39,6 @@ void delete_node(int index) {
 void delete_subtree(int index) {
     delete_sons(get_node(index));
     delete_node(index);
-    printf(OK_COMMUNICATE);
 }
 
 void split_node(int index, int sons_index) {

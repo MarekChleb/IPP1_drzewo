@@ -22,7 +22,7 @@ typedef struct Command{
     int value1, value2;
 } Command;
 
-void parse_line();
+int parse_line();
 Command* parse_command(char *input);
 void do_a_command(Command *to_do);
 
