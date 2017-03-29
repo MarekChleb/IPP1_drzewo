@@ -38,5 +38,6 @@ void delete_my_subtree(TreeNode *branch);
 TreeNode* get_node(int index);
 void null_node(int index);
 void bond_nodes(TreeNode *l, TreeNode *p);
+int get_current_number_of_nodes();
 
 #endif //DRZEWO2_LIST_H

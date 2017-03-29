@@ -63,3 +63,7 @@ void split_node(int index, int sons_index) {
     bond_nodes(new, branch->sons->right_guard);
     printf(OK_COMMUNICATE);
 }
+
+void clean_up() {
+    free(get_node(0));
+}

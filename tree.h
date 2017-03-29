@@ -15,5 +15,6 @@ void rightmost_child(int index);
 void delete_node(int index);
 void delete_subtree(int index);
 void split_node(int index, int sons_index);
+void clean_up();
 
 #endif //DRZEWO2_TREE_H

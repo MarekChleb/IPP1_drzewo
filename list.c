@@ -103,3 +103,7 @@ void bond_nodes(TreeNode *l, TreeNode *p) {
     l->next = p;
     p->prev = l;
 }
+
+int get_current_number_of_nodes() {
+    return number_of_nodes;
+}
