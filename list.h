@@ -20,7 +20,6 @@ typedef struct TreeNodesList {
     TreeNode *right_guard;
 } TreeNodesList;
 
-
 void init();
 
 TreeNodesList *new_tree_nodes_list(TreeNode *parent);
@@ -28,10 +27,6 @@ TreeNodesList *new_tree_nodes_list(TreeNode *parent);
 TreeNode *new_tree_node(int index);
 
 void pushback_new_son(TreeNode *branch, int index);
-
-void print_sons(TreeNode *branch);
-
-void print_my_subtree(TreeNode *branch);
 
 void delete_sons(TreeNode *branch);
 
@@ -46,5 +41,10 @@ int get_current_number_of_nodes();
 void decrement_number_of_nodes();
 
 void free_node(TreeNode *branch);
+
+/* Debugging tools */
+void print_sons(TreeNode *branch);
+
+void print_my_subtree(TreeNode *branch);
 
 #endif //DRZEWO_LIST_H
