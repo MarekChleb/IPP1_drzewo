@@ -1,9 +1,9 @@
-#include <mem.h>
+#include <string.h>
 #include "parse.h"
 
 int main(int argc, char *argv[]) {
     init();
-    if (argc > 1) {
+    if (argc == 2) {
         if (strcmp(argv[1], "-v") == 0) {
             while (parse_line()) {
                 fprintf(stderr, "NODES: %d\n", get_current_number_of_nodes());
@@ -16,7 +16,6 @@ int main(int argc, char *argv[]) {
         while (parse_line()) {
         }
     }
-    //print_my_subtree(get_node(0));
     clean_up();
     return 0;
 }

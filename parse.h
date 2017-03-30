@@ -1,8 +1,6 @@
 #ifndef DRZEWO2_PARSE_H
 #define DRZEWO2_PARSE_H
 
-#include <stdio.h>
-#include <malloc.h>
 #include "tree.h"
 
 #define MAX_COMMAND_NAME_SIZE 20
@@ -15,7 +13,7 @@
 #define TYPE_1_INPUT_FORMAT "%s %d"
 #define TYPE_2_INPUT_FORMAT "%s %d %d"
 
-typedef struct Command{
+typedef struct Command {
     int type;   /* 0 - add_node, 1 - rightmost_child, 2 - delete_node,
                  * 3 - delete_subtree, 4 - split_node
                  */
@@ -23,7 +21,9 @@ typedef struct Command{
 } Command;
 
 int parse_line();
-Command* parse_command(char *input);
+
+Command *parse_command(char *input);
+
 void do_a_command(Command *to_do);
 
-#endif //DRZEWO2_PARSE_H
+#endif //DRZEWO_PARSE_H

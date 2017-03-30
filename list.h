@@ -1,9 +1,3 @@
-/**
- *
- * static jak nie uzywamy poza plikiem
- *
- */
-
 #ifndef DRZEWO2_LIST_H
 
 #define DRZEWO2_LIST_H
@@ -22,22 +16,35 @@ typedef struct TreeNode {
 } TreeNode;
 
 typedef struct TreeNodesList {
-    TreeNode* left_guard;
-    TreeNode* right_guard;
+    TreeNode *left_guard;
+    TreeNode *right_guard;
 } TreeNodesList;
 
 
 void init();
-TreeNodesList* new_tree_nodes_list(TreeNode* parent);
-TreeNode* new_tree_node(int index);
+
+TreeNodesList *new_tree_nodes_list(TreeNode *parent);
+
+TreeNode *new_tree_node(int index);
+
 void pushback_new_son(TreeNode *branch, int index);
+
 void print_sons(TreeNode *branch);
+
 void print_my_subtree(TreeNode *branch);
+
 void delete_sons(TreeNode *branch);
-void delete_my_subtree(TreeNode *branch);
-TreeNode* get_node(int index);
+
+TreeNode *get_node(int index);
+
 void null_node(int index);
+
 void bond_nodes(TreeNode *l, TreeNode *p);
+
 int get_current_number_of_nodes();
 
-#endif //DRZEWO2_LIST_H
+void decrement_number_of_nodes();
+
+void free_node(TreeNode *branch);
+
+#endif //DRZEWO_LIST_H

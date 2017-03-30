@@ -1,18 +1,14 @@
-//
-// Created by Marek on 2017-03-24.
-//
-
 #include "list.h"
 
 static int number_of_nodes = 0;
-static TreeNode* nodes[MAX_NUMBER_OF_TREE_NODES];
+static TreeNode *nodes[MAX_NUMBER_OF_TREE_NODES];
 
-TreeNodesList* new_tree_nodes_list(TreeNode* parent) {
+TreeNodesList *new_tree_nodes_list(TreeNode *parent) {
     TreeNodesList *new_container;
     TreeNode *left, *right;
-    new_container = (TreeNodesList*) malloc(sizeof(TreeNodesList));
-    left = (TreeNode*) malloc(sizeof(TreeNode));
-    right = (TreeNode*) malloc(sizeof(TreeNode));
+    new_container = (TreeNodesList *) malloc(sizeof(TreeNodesList));
+    left = (TreeNode *) malloc(sizeof(TreeNode));
+    right = (TreeNode *) malloc(sizeof(TreeNode));
     left->prev = right->next = parent;
     bond_nodes(left, right);
     left->index = INDEX_OF_LEFT_GUARD;
@@ -25,26 +21,28 @@ TreeNodesList* new_tree_nodes_list(TreeNode* parent) {
 
 TreeNode *new_tree_node(int index) {
     TreeNode *new_branch;
-    new_branch = (TreeNode*) malloc(sizeof(TreeNode));
+    new_branch = (TreeNode *) malloc(sizeof(TreeNode));
     new_branch->index = index;
     new_branch->prev = new_branch->next = NULL;
     new_branch->sons = new_tree_nodes_list(new_branch);
-    nodes[index] = new_branch;
-    ++number_of_nodes;
+    if (index != INDEX_OF_LEFT_GUARD && index != INDEX_OF_RIGHT_GUARD) {
+        nodes[index] = new_branch;
+        ++number_of_nodes;
+    }
 
     return new_branch;
 }
 
 void pushback_new_son(TreeNode *branch, int index) {
     TreeNode *new_son = new_tree_node(index);
-    TreeNode* right = branch->sons->right_guard;
+    TreeNode *right = branch->sons->right_guard;
     bond_nodes(right->prev, new_son);
     bond_nodes(new_son, right);
 }
 
 void print_sons(TreeNode *branch) {
     TreeNode *it = branch->sons->left_guard->next;
-    while(it != branch->sons->right_guard) {
+    while (it != branch->sons->right_guard) {
         printf("I'm in son %d\n", it->index);
         it = it->next;
     }
@@ -67,31 +65,27 @@ void print_my_subtree(TreeNode *branch) {
 
 void delete_sons(TreeNode *branch) {
     TreeNode *it = branch->sons->left_guard->next;
-    while(it != branch->sons->right_guard) {
+    while (it != branch->sons->right_guard) {
         TreeNode *son_to_delete;
         son_to_delete = it;
         it = it->next;
         delete_sons(son_to_delete);
         null_node(son_to_delete->index);
         --number_of_nodes;
+
+        free(son_to_delete->sons->left_guard);
+        free(son_to_delete->sons->right_guard);
+        free(son_to_delete->sons);
         free(son_to_delete);
     }
     bond_nodes(branch->sons->left_guard, branch->sons->right_guard);
 }
 
-
-void delete_my_subtree(TreeNode *branch) {
-    bond_nodes(branch->prev, branch->next);
-    delete_sons(branch);
-    --number_of_nodes;
-    free(branch);
-}
-
 void init() {
-    TreeNode* root = new_tree_node(0);
+    new_tree_node(0);
 }
 
-TreeNode* get_node(int index) {
+TreeNode *get_node(int index) {
     return nodes[index];
 }
 
@@ -106,4 +100,15 @@ void bond_nodes(TreeNode *l, TreeNode *p) {
 
 int get_current_number_of_nodes() {
     return number_of_nodes;
+}
+
+void decrement_number_of_nodes() {
+    --number_of_nodes;
+}
+
+void free_node(TreeNode *branch) {
+    free(branch->sons->left_guard);
+    free(branch->sons->right_guard);
+    free(branch->sons);
+    free(branch);
 }

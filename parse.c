@@ -2,23 +2,26 @@
 
 int parse_line() {
     char input[MAX_INPUT_SIZE];
+    char *result;
     Command *to_do;
-
-    gets(input);
-    if (input[0] != '\0') {
-        to_do = parse_command(input);
-        do_a_command(to_do);
-        free(to_do);
-        return 1;
+    result = fgets(input, MAX_INPUT_SIZE, stdin);
+    if (result != NULL) {
+        if (input[0] != 10) {
+            if (!feof(stdin)) {
+                to_do = parse_command(input);
+                do_a_command(to_do);
+                return 1;
+            }
+        }
     }
     return 0;
 }
 
-Command* parse_command(char *input) {
+Command *parse_command(char *input) {
     char command_name[MAX_COMMAND_NAME_SIZE];
     int value1 = -1, value2 = -1;
-    Command* new_command;
-    new_command = (Command*) malloc(sizeof(Command));
+    Command *new_command;
+    new_command = (Command *) malloc(sizeof(Command));
 
     switch (input[0]) {
         case 'A':
@@ -41,7 +44,7 @@ Command* parse_command(char *input) {
             break;
 
         case 'S':
-            sscanf(input, TYPE_2_INPUT_FORMAT, input, &value1, &value2);
+            sscanf(input, TYPE_2_INPUT_FORMAT, command_name, &value1, &value2);
             new_command->type = SPLIT_NODE_TYPE;
             break;
 
@@ -78,4 +81,5 @@ void do_a_command(Command *to_do) {
         default:
             break;
     }
+    free(to_do);
 }
